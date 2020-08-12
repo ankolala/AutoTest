@@ -351,5 +351,6 @@ def build_report(file_path, data):
                              case_info=case_info,
                              )
 
-    with open(file_path, 'w', encoding='utf-8') as f:
+    # with open(file_path, 'w', encoding='utf-8') as f:
+    with open(file_path, 'w') as f:
         f.write(html)

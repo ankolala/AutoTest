@@ -1,12 +1,12 @@
 #! /usr/bin/env python
 # -*- coding: UTF-8 -*-
-import re
+
+import re, sys
+sys.path.append('./config')
 import functools
 import time
 import unittest
-from .setting import setting
-from . import log
-from .tag import Tag
+import setting
 
 CASE_TAG_FLAG = "__case_tag__"
 CASE_DATA_FLAG = "__case_data__"
@@ -235,15 +235,17 @@ class Meta(type):
 
         return super(Meta, cls).__new__(cls, clsname, bases, funcs)
 
-class _TestCase(unittest.TestCase, metaclass=Meta):
-    def shortDescription(self):
-        """覆盖父类的方法，获取函数的注释
-        :return:
-        """
-        doc = self._testMethodDoc
-        doc = doc and doc.split()[0].strip() or None
-        return doc
-        
+class _TestCase(unittest.TestCase):
+    pass
+# class _TestCase(unittest.TestCase, metaclass=Meta):
+#     def shortDescription(self):
+#         """覆盖父类的方法，获取函数的注释
+#         :return:
+#         """
+#         doc = self._testMethodDoc
+#         doc = doc and doc.split()[0].strip() or None
+#         return doc
+
 TestCaseBackup = unittest.TestCase
 unittest.TestCase = _TestCase
 
@@ -252,7 +254,7 @@ def stop_patch():
     unittest.TestCase = TestCaseBackup
 
 
-def run_case(case_class, case_name: str):
+def run_case(case_class, case_name):
     setting.execute_interval = 0.3
     r = re.compile(case_name.replace("test_", "test(_\d+)?_"))
     suite = unittest.TestSuite()
