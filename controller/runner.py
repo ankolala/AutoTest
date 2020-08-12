@@ -63,7 +63,7 @@ class _TestResult(unittest.TestResult):
 
     def addSuccess(self, test):
         self.success_count += 1
-        super().addSuccess(test)
+        super(_TestResult, self).addSuccess(test)
         output = self.complete_output()
         self.result.append((0, test, output, '', self._case_run_time))
 
@@ -195,12 +195,12 @@ class TestRunner(object):
 
     def add_case_dir(self, dir_path):
         if not os.path.exists(dir_path):
-            raise Exception("test_case_dir is not exist：{}".format(dir_path))
+            raise Exception("test_case_dir is not exist: {}".format(dir_path))
         elif dir_path in self.case_dirs:
-            log.warn("test_case_dir existed：{}".format(dir_path))
+            log.warn("test_case_dir existed: {}".format(dir_path))
         else:
             self.case_dirs.append(dir_path)
-        print 'dir cases include:', self.case_dirs
+        log.info("dir cases include: {}".format(self.case_dirs))
 
     def run_test(self, report_title='auto_test_report', style1=True, style2=True):
 
@@ -218,3 +218,4 @@ class TestRunner(object):
         _TestRunner(report_dir=report_dir, report_title=report_title).run(suite)
 
         # os.system("start report")
+        log.info("start report")
